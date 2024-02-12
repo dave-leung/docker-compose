@@ -1,0 +1,35 @@
+---
+version: "3.8"
+services:
+  semaphore:
+    image: semaphoreui/semaphore:latest
+    container_name: semaphore
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock  # Bind mount for Docker socket
+      - semaphore_data:/data  # Named volume for semaphore data
+    environment:
+      SEMAPHORE_DB_DIALECT: bolt
+      SEMAPHORE_ADMIN_PASSWORD: password
+      SEMAPHORE_ADMIN_NAME: admin
+      SEMAPHORE_ADMIN_EMAIL: admin@localhost
+      SEMAPHORE_ADMIN: admin
+    ports:
+      - 8000:3000
+    network_mode: host
+    restart: unless-stopped
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.semaphore.rule=Host(`semaphore.example.com`)"
+      - "traefik.http.routers.semaphore.entrypoints=websecure"
+      - "traefik.http.routers.semaphore.tls.certresolver=le"
+      - "traefik.http.routers.semaphore.tls=true"
+      - "traefik.http.routers.semaphore.service=semaphore"
+      - "traefik.http.services.semaphore.loadbalancer.server.port=3000"
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+volumes:
+  semaphore_data: 

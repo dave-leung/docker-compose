@@ -1,0 +1,22 @@
+---
+version: '3.8'
+services:
+  nessus:
+    image: tenable/nessus:latest-ubuntu
+    container_name: nessus_scanner
+    volumes:
+      - /volume1/docker/nessus/data:/opt/nessus
+    environment:
+      - TZ=Asia/Hong_Kong
+      - AcceptEULA=Y
+    ports:
+      - "8844:8834"
+    network_mode: bridge
+    restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+volumes:
+  nessus:

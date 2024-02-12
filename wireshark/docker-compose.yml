@@ -1,0 +1,27 @@
+---
+version: "3.8"
+services:
+  wireshark:
+    image: linuxserver/wireshark:latest
+    container_name: wireshark
+    cap_add:
+      - NET_ADMIN
+    network_mode: host
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Asia/Hong_Kong
+    ports:
+      - 3000:3000 #optional
+      - 3001:3001 #optional
+    restart: unless-stopped
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000"]
+      interval: 1m30s
+      timeout: 10s
+      retries: 3

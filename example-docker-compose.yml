@@ -1,0 +1,65 @@
+# ref https://docs.docker.com/compose/compose-file/
+
+---
+version: "3.8"    <- string, version of docker-compose, top level key
+
+services:           <- string, name of services, top level key
+  service:          <- String, name of the project
+    container_name: <- string, name of container, generate random name if not specified
+    image:          <- string, name of image
+  
+    cap_add:        <- string, add capabilities
+      - ALL         <- string, add all capabilities
+    cap_drop:       <- string, drop capabilities
+      - NET_ADMIN   <- string, drop NET_ADMIN capability
+  
+    config:         <- string, specify config file
+      - myconfig    <- string, specify config file name
+
+    env_file:       <- string, specify env file
+      - .env        <- string, specify env file name
+
+    environment:      <- string, specify env
+      - env=dev       <- string, specify env
+      - show=true     <- string, specify env
+
+    logging:
+      driver: syslog              <- string, specify logging driver
+      options:                    <- string, specify logging options
+        syslog-address: "tcp://"  <- string, specify logging options
+        tag: "mytag"              <- string, specify logging options
+      # driver: json-file         <- string, specify logging driver
+      # options:                  <- string, specify logging options
+      #   max-size: "200k"        <- string, specify logging options
+      #   max-file: "10"          <- string, specify logging options
+
+    network_mode: host            <- string, specify network mode
+    # network_mode: bridge        <- string, specify network mode
+    # network_mode: none          <- string, specify network mode
+    # network_mode: container:    <- string, specify network mode
+    # network_mode: service:      <- string, specify network mode
+    # network_mode: <network_name> <- string, specify network mode
+    
+    ports:                        <- string, specify ports
+      - "8080:8080/tcp"           <- string, specify ports
+      # - "8081:8081"               <- string, specify ports
+
+    restart: always               <- string, specify restart policy
+    # restart: on-failure:5       <- string, specify restart policy
+    # restart: unless-stopped     <- string, specify restart policy
+    # restart: no                 <- string, specify restart policy
+
+    volumes:                          <- string, specify volumes
+      - db-data:/var/lib/backup/data  <- string, specify volumes
+
+
+volume:               <- string, name of volume, top level key
+  db-data:            <- string, name of volume
+    driver: external  <- string, specify volume driver
+    # driver: local    <- string, specify volume driver
+    
+
+configs:            <- string, specify config file
+  myconfig:
+    file:           <- string, specify config file path
+    external:       <- boolean, use external config file

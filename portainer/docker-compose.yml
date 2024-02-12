@@ -1,0 +1,29 @@
+---
+version: '3.8'
+services:     
+  portainer-ce:
+    image: portainer/portainer-ce:latest
+    container_name: portainer-ce
+    volumes:
+      - portainer:/data
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - CONSTRAINTS=tag==v1
+      - PUID=1000
+      - PGID=1000
+      - TZ=Asia/Hong_Kong
+    ports:
+      #- "9000:9000"
+      - "9443:9443"
+    network_mode: bridge
+    restart: unless-stopped
+    labels:
+      com.example.description: "Open source container management"
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+volumes:
+  portainer:

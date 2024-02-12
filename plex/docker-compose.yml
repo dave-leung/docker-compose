@@ -1,0 +1,32 @@
+---
+version: '3.8'
+services:
+  plex:
+    image: linuxserver/plex:latest
+    container_name: plex
+    volumes:
+      - plex/config:/config
+      - movie:/movies
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - VERSION=docker
+      - TZ=Asia/Hong_Kong
+      - Languages=en_US
+    ports:
+      # - 1900:1900
+      - 32400:32400
+      # - 32410:32410
+      # - 32412:32412
+      # - 32413:32413
+      # - 32414:32414
+      # - 32469:32469
+      # - 5353:5353
+      # - 8324:8324
+    network_mode: bridge
+    restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
