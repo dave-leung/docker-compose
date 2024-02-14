@@ -1,0 +1,21 @@
+---
+version: '3.8'
+services:
+  gitlab-ce:
+    image: gitlab/gitab-ce:16.7.5-ce.0
+    container_name: gitlab-ce
+    volumes:
+      - gitlab/data:/var/opt/gitlab
+      - gitlab/logs:/var/log/gitlab
+      - gitlab/config:/etc/gitlab
+    ports:
+      - 443:443
+      - 80:80
+      - 22:22
+    network_mode: bridge
+    restart: unless-stopped
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
